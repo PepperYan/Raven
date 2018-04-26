@@ -42,15 +42,11 @@ export default class ChildrenRenderer{
       const nextElement = nextChildren[i];
       if(prevElementInstance && !nextElement){//removed
        return Reconciler.unmountComponent(prevElement);
-      // }else if(checkType(nextElement) === 4 || checkType(nextElement) === 3){ //dom el text
-      //   // Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
-      //   this._updateDOMChildren(prevElementInstance, nextElement);
       }else if(prevElementInstance.type !== nextElement.type){ //rewrite
         Reconciler.unmountComponent(prevElementInstance);
         const nextComponent = instantiateComponent(nextElement);
         return Reconciler.mountComponent(nextComponent);
       }else{ //update
-        // debugger
         return Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
       }
     }

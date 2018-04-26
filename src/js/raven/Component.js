@@ -18,10 +18,6 @@ export default class {
     this.state = this.state || {};
   }
 
-  _construct(element) {
-    this._element = element
-  }
-
   mountComponent(){
     const element = this.render();
     this._element = element;

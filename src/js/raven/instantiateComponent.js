@@ -14,7 +14,6 @@ export default function(element){
     instance = new DOMComponent(element);
   }else{ //functional component
     instance = new element.type(element.props);
-    instance._construct(element);
   }
   return instance;
 }
