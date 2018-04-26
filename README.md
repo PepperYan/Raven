@@ -1,8 +1,7 @@
 # React 学习项目 Raven
 
 ##简介
-
-该项目用于学习React原理, 没什么test case所以不建议生产使用
+该项目用于学习React原理,没什么testcase所以不建议生产使用
 
 ##如何运行
 本项目依赖`restackx-cli`脚手架, 请使用 `restackx-cli` 2.x版本因为未在1.x版本进行测试
@@ -41,4 +40,5 @@ npm start
 - [] fiber support
   - [] async udpate & queque
 - [] context support
+- [] refs
 
