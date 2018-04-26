@@ -14,7 +14,7 @@ function receiveComponent(component, nextElement) {
   const prevElement = component._element;
   if (prevElement === nextElement)  return
 
-  component.updateComponent(component._element, nextElement)
+  return component.updateComponent(component._element, nextElement)
 }
 
 function updateChildren(prevChildren, nextChildren){

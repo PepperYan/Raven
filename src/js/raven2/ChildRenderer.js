@@ -41,17 +41,17 @@ export default class ChildrenRenderer{
       const prevElementInstance = prevChildren[i];
       const nextElement = nextChildren[i];
       if(prevElementInstance && !nextElement){//removed
-        Reconciler.unmountComponent(prevElement);
-      }else if(checkType(nextElement) === 4 || checkType(nextElement) === 3){ //dom el text
-        // Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
-        this._updateDOMChildren(prevElementInstance, nextElement);
+       return Reconciler.unmountComponent(prevElement);
+      // }else if(checkType(nextElement) === 4 || checkType(nextElement) === 3){ //dom el text
+      //   // Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
+      //   this._updateDOMChildren(prevElementInstance, nextElement);
       }else if(prevElementInstance.type !== nextElement.type){ //rewrite
         Reconciler.unmountComponent(prevElementInstance);
         const nextComponent = instantiateComponent(nextElement);
-        Reconciler.mountComponent(nextComponent);
+        return Reconciler.mountComponent(nextComponent);
       }else{ //update
         // debugger
-        Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
+        return Reconciler.receiveComponent(this._renderedComponents[i],nextElement);
       }
     }
   }

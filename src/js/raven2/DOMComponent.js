@@ -23,7 +23,11 @@ export default class DOMComponent extends ChildrenRenderer{
   updateComponent(prevElement, nextElement){
     this._element = nextElement;
     this._updateProps(prevElement.props, nextElement.props);
-    this._updateDOMChildren(prevElement.props, nextElement.props);
+    if(checkType(nextElement) === 3 || checkType(nextElement) === 4){ //当节点为text节点时, 没有props属性, nextElement本身也是string||number
+      this._updateDOMChildren(prevElement.props, nextElement);
+    }else{
+      this._updateDOMChildren(prevElement.props, nextElement.props);
+    }
   }
 
   _mountDOMChildren(props){
@@ -36,11 +40,12 @@ export default class DOMComponent extends ChildrenRenderer{
       const self = this;
       if(checkType(childrenEls) === 7){ // list
         childrenEls.forEach(childEl => {
-          if(childEl._tag && childEl._tag === "#text"){//文字节点
-            self._dom.insertAdjacentHTML('beforeend', childEl.props.children);
-          }else{
-            self._dom.appendChild(childEl._dom);
-          }
+          // if(childEl._tag && childEl._tag === "#text"){//文字节点
+          //   // self._dom.insertAdjacentHTML('beforeend', childEl.props.children);
+          // }else{
+          //   self._dom.appendChild(childEl._dom);
+          // }
+          self._dom.appendChild(childEl._dom);
         })
       // }else if(children){ //object
       //   this._dom.appendChild(children);
@@ -94,14 +99,14 @@ export default class DOMComponent extends ChildrenRenderer{
 
   _updateDOMChildren(prevProps, nextProps){
     const prevType = typeof prevProps;
-    const nextType = typeof nextProps.children;
+    const nextType = typeof nextProps;
     if(nextProps === void 0) return;
     
     if(nextType === 'string' || nextType === 'number'){
-      this._dom.innerText = nextProps.children;
-    }else if(nextProps.children === void 0){
-      debugger
-      this._dom.innerText = nextProps;
+      this._dom.innerHTML = nextProps;
+    // }else if(nextProps.children === void 0){
+    //   debugger
+    //   this._dom.innerText = nextProps;
     }else{
       this.updateChildren(nextProps.children);
     }
