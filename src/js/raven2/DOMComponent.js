@@ -20,6 +20,12 @@ export default class DOMComponent extends ChildrenRenderer{
     return this._element;
   }
 
+  updateComponent(prevElement, nextElement){
+    this._element = nextElement;
+    this._updateProps(prevElement.props, nextElement.props);
+    this._updateDOMChildren(prevElement.props, nextElement.props);
+  }
+
   _mountDOMChildren(props){
     const childrenType = checkType(props.children)
     if(childrenType === 3 || childrenType === 4){
@@ -27,12 +33,13 @@ export default class DOMComponent extends ChildrenRenderer{
       this._dom.appendChild(textNode);
     }else{
       const childrenEls = this.mountChildren(props.children);
+      const self = this;
       if(checkType(childrenEls) === 7){ // list
         childrenEls.forEach(childEl => {
           if(childEl._tag && childEl._tag === "#text"){//文字节点
-            this._dom.insertAdjacentHTML('beforeend', childEl.props.children);
+            self._dom.insertAdjacentHTML('beforeend', childEl.props.children);
           }else{
-          this._dom.appendChild(childEl._dom);
+            self._dom.appendChild(childEl._dom);
           }
         })
       // }else if(children){ //object
@@ -43,17 +50,21 @@ export default class DOMComponent extends ChildrenRenderer{
 
   _updateProps(prevProps, nextProps){
     let styleUpdates = {}
+    const self = this
+    if(nextProps === void 0) return;
 
     //移除所有
     Object.keys(prevProps).forEach(propName => {
+      let prevValue = prevProps[propName];
       if(propName === 'styles'){
         Object.keys(prevProps['style']).forEach((styleName) => {
           styleUpdates[styleName] = ''
         })
-      }else if(propName.startsWith('on')){ //TODO remove event
-
+      }else if(propName.startsWith('on')){ //TODO remove event 
+        const eventName = propName.slice(2).toLocaleLowerCase();
+        self._dom.removeEventListener(eventName, prevValue);
       }else{
-        this._dom.removeAttribute(propsName);
+        self._dom.removeAttribute(propName);
       }
     })
 
@@ -66,17 +77,33 @@ export default class DOMComponent extends ChildrenRenderer{
         Object.keys(nextProps['style']).forEach((styleName) => {
           styleUpdates[styleName] = nextValue[styleName];
         })
-      }else if( propName.startsWith('on')){//event
-
+      }else if( propName.startsWith('on')){//event  此处与React事件设计不符, React实现事件只在document绑定一次, 接收事件后,再在内部分发, 暂时直接绑定到dom上
+        const eventName = propName.slice(2).toLocaleLowerCase();
+        self._dom.addEventListener(eventName, nextValue);
       }else{
         if (propName === 'children')  return
-        this._dom.setAttribute(propName, nextValue);
+        self._dom.setAttribute(propName, nextValue);
       }
     })
 
     //更新css
     Object.keys(styleUpdates).forEach((styleName) => {
-      this._dom.style[styleName] = styleUpdates[styleName]
+      self._dom.style[styleName] = styleUpdates[styleName]
     });
+  }
+
+  _updateDOMChildren(prevProps, nextProps){
+    const prevType = typeof prevProps;
+    const nextType = typeof nextProps.children;
+    if(nextProps === void 0) return;
+    
+    if(nextType === 'string' || nextType === 'number'){
+      this._dom.innerText = nextProps.children;
+    }else if(nextProps.children === void 0){
+      debugger
+      this._dom.innerText = nextProps;
+    }else{
+      this.updateChildren(nextProps.children);
+    }
   }
 }

@@ -2,6 +2,7 @@ import createElement from './createElement';
 import instantiateComponent from './instantiateComponent'
 import Reconciler from './Reconciler';
 import {checkType} from './utils';
+import Component from './Component';
 
 function render(element, root){
   mount(element,root)
@@ -23,5 +24,6 @@ function mount(element, root) {
 
 export default {
   createElement,
+  Component,
   render
 }
