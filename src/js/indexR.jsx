@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import {Provider} from 'mobx-react'
 
 const container = document.getElementById('container');
-import React from './raven2'
+import React from './raven'
 
 const stories = [
   { name: "hello1", url: "http://bit.ly/2pX7HNn" },

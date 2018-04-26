@@ -24,11 +24,11 @@ function createElement(type, config, ...children){
     }
   }
   
-  // if(children.length < 2){
-  //   props.children = children[0];
-  // }else{
+  if(children.length < 2){
+    props.children = children[0];
+  }else{
     props.children = children;
-  // }
+  }
 
   let defaultProps = type.defaultProps;
   if(defaultProps){
