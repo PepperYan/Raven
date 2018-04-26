@@ -40,11 +40,7 @@ export default class DOMComponent extends ChildrenRenderer{
       const self = this;
       if(checkType(childrenEls) === 7){ // list
         childrenEls.forEach(childEl => {
-          // if(childEl._tag && childEl._tag === "#text"){//文字节点
-          //   // self._dom.insertAdjacentHTML('beforeend', childEl.props.children);
-          // }else{
-          //   self._dom.appendChild(childEl._dom);
-          // }
+          //文字节点也会保存到_dom
           self._dom.appendChild(childEl._dom);
         })
       // }else if(children){ //object
@@ -58,7 +54,7 @@ export default class DOMComponent extends ChildrenRenderer{
     const self = this
     if(nextProps === void 0) return;
 
-    //移除所有
+    //移除所有props
     Object.keys(prevProps).forEach(propName => {
       let prevValue = prevProps[propName];
       if(propName === 'styles'){
@@ -73,6 +69,7 @@ export default class DOMComponent extends ChildrenRenderer{
       }
     })
 
+    //add props
     Object.keys(nextProps).forEach(propName => {
       let prevValue = prevProps[propName];
       let nextValue = nextProps[propName];
@@ -102,12 +99,9 @@ export default class DOMComponent extends ChildrenRenderer{
     const nextType = typeof nextProps;
     if(nextProps === void 0) return;
     
-    if(nextType === 'string' || nextType === 'number'){
+    if(nextType === 'string' || nextType === 'number'){//文字节点
       this._dom.innerHTML = nextProps;
-    // }else if(nextProps.children === void 0){
-    //   debugger
-    //   this._dom.innerText = nextProps;
-    }else{
+    }else{  // Node
       this.updateChildren(nextProps.children);
     }
   }
