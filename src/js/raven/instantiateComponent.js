@@ -12,6 +12,8 @@ export default function(element){
     })
   }else if(elementType === 4){ //DOM节点
     instance = new DOMComponent(element);
+  }else if(elementType === 0){
+
   }else{ //functional component
     instance = new element.type(element.props);
   }

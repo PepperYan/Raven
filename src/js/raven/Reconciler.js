@@ -6,8 +6,8 @@ function mountChildren(component){
   return component.mountChildren();
 }
 
-function unmountComponent(component) {
-  component.unmountComponent()
+function unmountComponent(component,parentDOM) {
+  component.unmountComponent(parentDOM)
 }
 
 function receiveComponent(component, nextElement) {

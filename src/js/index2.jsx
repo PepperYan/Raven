@@ -47,9 +47,13 @@ class Story extends React.Component {
     const { name, url } = this.props;
     const { likes } = this.state;
     const likesElement = <span />;
+    const isShow = likes % 2 === 0? true : false
     return (
       <li>
         <button onClick={e => this.like()}>{likes}<b>❤️</b></button>
+        {
+          isShow && <span>看到</span>
+        }
         <a href={url}>{name}</a>
       </li>
     );

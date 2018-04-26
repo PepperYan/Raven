@@ -24,6 +24,7 @@ export default class {
     
     let component = instantiateComponent(element);
     this._renderedComponent = component
+    // this._element._renderedComponent = component;
 
     let dom = Reconciler.mountComponent(component);
     //Component的children有可能还是children所以这里不能this._dom = dom, 因为dom可能是另一个Component(object)
@@ -52,7 +53,7 @@ export default class {
     if(prevRenderedElement.type === nextRenderedElement.type){
       Reconciler.receiveComponent(this._renderedComponent,nextRenderedElement);
     }else{
-      Reconciler.unmountComponent(this._renderedComponent);
+      Reconciler.unmountComponent(this._renderedComponent,this._dom);
 
       const nextComponent = instantiateComponent(nextElement);
       const el = Reconciler.mountComponent(nextComponent);

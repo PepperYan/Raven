@@ -30,6 +30,10 @@ export default class DOMComponent extends ChildrenRenderer{
     }
   }
 
+  unmountComponent(parentDOM){
+    parentDOM.removeChild(this._dom);
+  }
+
   _mountDOMChildren(props){
     const childrenType = checkType(props.children)
     if(childrenType === 3 || childrenType === 4){
